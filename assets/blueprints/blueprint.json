@@ -1,0 +1,106 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+    "meta": {
+		  "title": "WooCommerce import products + bonusplus-wp",
+		  "description": "Blueprint to create a WooCommerce products and export an XML/CSV product feed",
+		  "author": "redmonkey73",
+		  "categories": ["WooCommerce", "categories", "reset", "log", "debug", "import", "content"]
+	  },
+    "preferredVersions": {
+      "php": "latest",
+      "wp": "latest"
+    },
+    "features": {
+      "networking": false
+    },
+    "phpExtensionBundles": [
+      "kitchen-sink"
+    ],
+    "landingPage": "/wp-admin/admin.php?page=bpwp-settings",
+    "steps": [
+      {
+        "step": "login",
+        "username": "admin",
+        "password": "password"
+      },
+      {
+        "step": "resetData"
+      },
+      {
+        "step": "installPlugin",
+        "pluginZipFile": {
+          "resource": "wordpress.org/plugins",
+          "slug": "woocommerce"
+        },
+        "options": {
+          "activate": true
+        }
+      },
+      {
+        "step": "installPlugin",
+        "pluginZipFile": {
+          "resource": "wordpress.org/plugins",
+          "slug": "bonus-plus-wp"
+        },
+        "options": {
+          "activate": true
+        }
+      },
+      {
+        "step": "importWxr",
+        "file": {
+          "resource": "url",
+          "url": "https://raw.githubusercontent.com/evgrezanov/bonus-plus-wp/main/.wordpress-org/blueprints/demoproducts.xml"
+        }
+      },
+      {
+        "step": "setSiteOptions",
+        "options": {
+          "blogname": "Бонус+ WP Demo shop",
+          "users_can_register": "0",
+          "admin_email": "redmonkey73@yandex.ru",
+          "start_of_week": "1",
+          "use_balanceTags": "0",
+          "use_smilies": "1",
+          "require_name_email": "1",
+          "comments_notify": "1",
+          "posts_per_rss": "10",
+          "rss_use_excerpt": "0"
+        }
+      },
+      {
+        "step": "setSiteOptions",
+        "options": {
+          "default_category": "1",
+          "default_comment_status": "open",
+          "default_ping_status": "open",
+          "default_pingback_flag": "0",
+          "posts_per_page": "10",
+          "date_format": "d.m.Y",
+          "time_format": "H:i",
+          "links_updated_date_format": "d.m.Y H:i",
+          "comment_moderation": "0",
+          "moderation_notify": "1"
+        }
+      },
+      {
+        "step": "setSiteOptions",
+        "options": {
+          "WPLANG": "ru_RU"
+        }
+      },
+      {
+        "step": "installTheme",
+        "themeZipFile": {
+          "resource": "wordpress.org/themes",
+          "slug": "storefront"
+        }
+      },
+      {
+        "step": "writeFile",
+        "path": "/wordpress/wp-content/mu-plugins/bgnightly-notice.php",
+        "data": "<?php add_action('admin_notices', function() {  echo '<div class=\"notice notice-info is-dismissible\"><p>Hello from Playground.</p></div>'; });"
+      }
+    ]
+  }
+  
